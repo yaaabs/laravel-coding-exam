@@ -1,54 +1,56 @@
 <!-- Login.vue -->
 <template>
-  <div class="login-page">
-    <div class="login-container">
-      <div class="brand-section">
-        <img src="@/assets/redcore-logo.png" alt="Redcore Logo" class="logo" />
-        <h1>Welcome Back!</h1>
-        <p>Please login to continue to YabuTech Portal</p>
-      </div>
-      
-      <form @submit.prevent="handleLogin" class="login-form">
-        <div class="form-group">
-          <label>Email Address</label>
-          <input 
-            v-model="email" 
-            type="email" 
-            class="form-control" 
-            placeholder="Enter your email"
-            required 
-          />
+  <div class="page">
+    <div class="container">
+      <div class="split-container">
+        <div class="brand-section">
+          <img src="@/assets/redcore-logo.png" alt="Redcore Logo" class="logo" />
+          <h1>Welcome Back!</h1>
+          <p>Please login to continue to YabuTech Portal</p>
         </div>
-        
-        <div class="form-group">
-          <label>Password</label>
-          <div class="password-input">
+
+        <form @submit.prevent="handleLogin" class="form">
+          <div class="form-group">
+            <label>Email Address</label>
             <input 
-              v-model="password" 
-              :type="showPassword ? 'text' : 'password'"
+              v-model="email" 
+              type="email" 
               class="form-control" 
-              placeholder="Enter your password"
+              placeholder="Enter your email"
               required 
             />
-            <i 
-              :class="showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"
-              @click="showPassword = !showPassword"
-            ></i>
           </div>
-        </div>
+          
+          <div class="form-group">
+            <label>Password</label>
+            <div class="password-input">
+              <input 
+                v-model="password" 
+                :type="showPassword ? 'text' : 'password'"
+                class="form-control" 
+                placeholder="Enter your password"
+                required 
+              />
+              <i 
+                :class="showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"
+                @click="showPassword = !showPassword"
+              ></i>
+            </div>
+          </div>
 
-        <div v-if="error" class="alert alert-danger">{{ error }}</div>
-        
-        <button type="submit" class="submit-btn" :disabled="loading">
-          {{ loading ? 'Logging in...' : 'Login' }}
-        </button>
+          <div v-if="error" class="alert alert-danger">{{ error }}</div>
+          
+          <button type="submit" class="submit-btn" :disabled="loading">
+            {{ loading ? 'Logging in...' : 'Login' }}
+          </button>
 
-        <div class="form-footer">
-          <router-link to="/register" class="register-link">
-            Don't have an account? Register here
-          </router-link>
-        </div>
-      </form>
+          <div class="form-footer">
+            <router-link to="/register" class="register-link">
+              Don't have an account? Register here
+            </router-link>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </template>
@@ -87,54 +89,89 @@ const handleLogin = async () => {
 </script>
 
 <style scoped>
-.login-page {
+.page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+  background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px;
+  position: relative;
 }
 
-.login-container {
-  background: white;
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+.container {
+  background: rgba(255, 255, 255, 0.98);
+  border-radius: 16px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
   width: 100%;
-  max-width: 480px;
-  padding: 40px;
+  max-width: 900px;
+  overflow: hidden;
+}
+
+.split-container {
+  display: grid;
+  grid-template-columns: 450px 1fr;
+  min-height: 550px;
 }
 
 .brand-section {
+  background: linear-gradient(135deg, #E31837 0%, #c01830 100%);
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
   text-align: center;
-  margin-bottom: 40px;
 }
 
 .logo {
   height: 60px;
   margin-bottom: 20px;
+  filter: brightness(0) invert(1);
+  animation: floatAnimation 3s ease-in-out infinite;
+  transition: all 0.3s ease;
+}
+
+.brand-section:hover .logo {
+  transform: translateY(-5px);
+  filter: drop-shadow(0 5px 20px rgba(255, 255, 255, 0.6)) brightness(0) invert(1);
+}
+
+@keyframes floatAnimation {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }
 
 .brand-section h1 {
-  color: #E31837; /* Redcore red */
-  font-size: 24px;
-  margin-bottom: 10px;
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 12px;
 }
 
 .brand-section p {
-  color: #666;
+  color: rgba(255, 255, 255, 0.9);
   font-size: 16px;
 }
 
-.form-group {
-  margin-bottom: 25px;
+.form {
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+  overflow-y: auto;
 }
 
-.form-group label {
-  display: block;
-  margin-bottom: 8px;
-  color: #333;
-  font-weight: 500;
+.form-group {
+  margin-bottom: 15px;
 }
 
 .form-control {
@@ -148,19 +185,6 @@ const handleLogin = async () => {
 .form-control:focus {
   border-color: #E31837;
   outline: none;
-}
-
-.password-input {
-  position: relative;
-}
-
-.password-input i {
-  position: absolute;
-  right: 16px;
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
-  color: #666;
 }
 
 .submit-btn {
@@ -180,14 +204,22 @@ const handleLogin = async () => {
   background: #c01830;
 }
 
-.submit-btn:disabled {
-  background: #ff8fa3;
-  cursor: not-allowed;
+.form-footer {
+  text-align: center;
+  margin-top: 20px;
 }
 
-.form-footer {
-  margin-top: 20px;
-  text-align: center;
+.password-input {
+  position: relative;
+}
+
+.password-input i {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #666;
 }
 
 .register-link {
@@ -210,5 +242,22 @@ const handleLogin = async () => {
   background: #fee2e2;
   color: #ef4444;
   border: 1px solid #fecaca;
+}
+
+@media (max-width: 768px) {
+  .split-container {
+    grid-template-columns: 1fr;
+    min-height: auto;
+    max-height: none;
+  }
+  
+  .brand-section {
+    padding: 25px;
+    min-height: 180px;
+  }
+  
+  .form {
+    padding: 25px;
+  }
 }
 </style>
